@@ -17,10 +17,9 @@ Also, every inc/dec/jnz on a register will always be followed by a mov on the re
 
 """
 
-import unittest
-
 
 def simple_assembler(program):
+    # return a dictionary with the registers
     class SimpleAssemblerInterpreter:
         def __init__(self, commands: list):
             self.commands = commands
@@ -35,7 +34,8 @@ def simple_assembler(program):
 
         def run_command(self, command: str):
             command_name, *args = command.split()
-            getattr(self, command_name)(*args)
+            # print(command_name, args, self.registers, self.command_index)
+            # getattr(self, command_name)(*args)
 
         def _get_value(self, constant_or_register):
             try:
@@ -69,13 +69,26 @@ def simple_assembler(program):
         commands=program).run()
 
 
-class AssemblerSimpleTest(unittest.TestCase):
-    def test_01(self):
-        code = '''\
-        mov a 5
-        inc a
-        dec a
-        dec a
-        jnz a -1
-        inc a'''
-        self.assertEqual(simple_assembler(code.splitlines()), {'a': 1})
+# @staticmethod
+# def get_jump_index(relative_delta: int) -> int:
+#     """
+#     Note: the jnz instruction moves relative to itself. For example, an offset of -1 would
+#     continue at the previous instruction, while an offset of 2 would skip over the next instruction.
+#     :param relative_delta:
+#     :return:
+#     """
+#
+#     if relative_delta < 0:
+#         return relative_delta
+
+#
+# if __name__ == '__main__':
+#     print(SimpleAssemblerInterpreter(
+#         commands=[
+#             'mov a 5',
+#             'inc a',
+#             'dec a',
+#             'dec a',
+#             'jnz a -1',
+#             'inc a',
+#         ]).run())
